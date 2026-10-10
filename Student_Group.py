@@ -21,11 +21,9 @@ class Student:
 
     @property
     def average(self):
-        res = 0
         if not self.grades:
             return 0.0
-        for v in self.grades:
-            res += v.value
+        res = sum(v.value for v in self.grades)
         return res / len(self.grades)
 
     def __post_init__(self):
@@ -38,10 +36,12 @@ class Group:
         self.title = title
 
     def add_student(self, student):
-        if student in self.students: raise ValueError
+        if student.name in [i.name for i in self.students]: raise ValueError
         self.students.append(student)
 
     def best(self):
+        if len(self.students)==0:
+            return None
         return max(self.students, key = lambda s: s.average)
 
     def __len__(self):
